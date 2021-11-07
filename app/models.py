@@ -28,7 +28,7 @@ class Post(db.Model):
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    posting_date = db.Column(db.DateTime, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # save post
