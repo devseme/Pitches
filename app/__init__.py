@@ -41,8 +41,8 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
 
     # Registering the auth bluprints
-    from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/user-account')
+    # from .auth import auth as auth_blueprint
+    # app.register_blueprint(auth_blueprint, url_prefix='/user-account')
 
     # configure UploadSet
     configure_uploads(app, photos)
