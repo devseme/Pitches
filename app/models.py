@@ -21,14 +21,14 @@ class Category(db.Model):  # category table
     def _repr_(self):
         return f'Category {self.name}'
 
-
-class Post(db.Model):  # post table
+     # the post table
+class Post(db.Model):  
     _tablename_ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    posting_date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # save post

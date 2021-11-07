@@ -1,2 +1,2 @@
-export SECRET_KEY = 'SRC'
-python 3.8 manage.py server 
+export SECRET_KEY=Pitcheswork
+python3.8 manage.py server 
