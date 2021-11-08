@@ -7,7 +7,27 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Helllooooo</p>
+    {% extends 'base.html'%}
+{% import 'macros.html' as macro %}
+
+{% block styles%}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid text-center">
+        
+
+       <p>hello</p>
+       
+
+</div>
+
+
+{% endblock%}
+    
     
 </body>
 </html>
