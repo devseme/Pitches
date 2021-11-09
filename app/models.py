@@ -5,21 +5,9 @@ from datetime import datetime
 from . import login_manager
 
 
-class Category(db.Model):  # category table
-    _tablename_ = 'categories'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    post = db.relationship('Post', backref='category', lazy='dynamic')
 
-    # save category
 
-    def save_category(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def _repr_(self):
-        return f'Category {self.name}'
+  
 
      # the post table
 class Post(db.Model):  
@@ -27,7 +15,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category= db.Column(db.String(255))
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
