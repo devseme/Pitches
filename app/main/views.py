@@ -3,7 +3,7 @@ from . import main
 from ..models import User,Post, Comment,Upvote,Downvote
 from flask_login import login_required,current_user
 from .. import db,photos
-from .forms import PostForm,UpdateProfile
+from .forms import PostForm,UpdateProfile,CommentForm
 
 
 
@@ -85,7 +85,7 @@ def like(id):
     )
     db.session.add(new_like)
     db.session.commit()
-    flash('You have successfully upvoted the pitch!')
+    flash('You have successfully liked the pitch!')
     return redirect(url_for('main.index'))
 
 
@@ -102,7 +102,7 @@ def dislike(id):
        
         db.session.delete(dislike)
         db.session.commit()
-        flash('You have successfully undownvoted the pitch!')
+        flash('You have successfully disliked the pitch!')
         return redirect(url_for('.index'))
 
     new_dislike = Downvote(
@@ -112,4 +112,26 @@ def dislike(id):
     db.session.add(new_dislike)
     db.session.commit()
     flash('You have successfully disliked the pitch!')
-    return redirect(url_for('.index'))    
+    return redirect(url_for('.index'))  
+
+@main.route('/post/<id>', methods=['GET', 'POST'])
+@login_required
+def post_details(id):
+    # get all comments of the pitch
+    comments = Comment.query.filter_by(post_id=id).all()
+    posts = Post.query.get(id)
+    if posts is None:
+        abort(404)
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(
+            content=form.content.data,
+            post_id=id,
+            user_id=current_user.id
+        )
+        db.session.add(comment)
+        db.session.commit()
+        form.content.data = ''
+        flash('Your comment has been posted successfully!')
+    return render_template('comments.html',post= posts, comment=comments, comment_form = form)    
+

@@ -16,7 +16,6 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="container" >
 <div class="row">
     
@@ -37,6 +36,15 @@
                 </div>
                 <div class="col-md-5 downvote">
                     <span class="foot"> <a href="{{url_for('main.dislike',id = post.id)}}"> <button class="btn-danger">Dislikes:{{post.downvote.count()}}</button></a></span>
+
+                    
+                </div>
+                <div></div>
+                <div>
+                
+                   <button button type="button" class="btn btn-primary" style="margin:0.5vw; padding:0.5vw; text-decoration:none;"> <span class="foot"> <a href="{{ url_for('main.post_details', id = post.id)}}"style= "color:white; ">Read More</a></span></button>
+
+                    
                 </div>
             </div>
         </div>

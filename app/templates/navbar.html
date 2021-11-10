@@ -11,14 +11,14 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li style="color: #EEC390;"><a href="/">Home</a></li>
+                <li ><a href="/"style="color:white;">Home</a></li>
                 <li><a href="/post" class="tag"style="color: #EEC390;">Write Pitch</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if current_user.is_authenticated %}
               
 
-              <li class="user"style="color: #EEC390;"><a href="{{url_for('main.profile',uname=current_user.username)}}">{{current_user.username}}</a></li>
+              <li class="user"style="color: #EEC390;"><a href="{{url_for('main.profile',uname=current_user.username)}}"style="color:white;">{{current_user.username}}</a></li>
               
               <li><a href="{{url_for('auth.logout')}}"style="color: #EEC390;">Sign out</a></li>
               {% else %}
