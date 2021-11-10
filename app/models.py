@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from . import login_manager
 
+
     # the post table
 class Post(db.Model):  
     _tablename_ = 'posts'
@@ -13,6 +14,9 @@ class Post(db.Model):
     category= db.Column(db.String(255))
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    comment = db.relationship('Comment', backref='post', lazy='dynamic')
+    upvote = db.relationship('Upvote',backref='post',lazy='dynamic')
+    downvote = db.relationship('Downvote',backref='post',lazy='dynamic')
 
     # save post
 
@@ -23,9 +27,49 @@ class Post(db.Model):
     def _repr_(self):
         return f'Post {self.title}'
 
+class Upvote(db.Model):
+    tablename = 'upvotes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_upvotes(cls, id):
+        upvote = Upvote.query.filter_by(post_id=id).all()
+        return upvote
+
+    def repr(self):
+        return f'{self.user_id}:{self.post_id}'
+
+
+class Downvote(db.Model):
+    tablename = 'downvotes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_downvotes(cls, id):
+        downvote = Downvote.query.filter_by(post_id=id).all()
+        return downvote
+
+    def repr(self):
+        return f'{self.user_id}:{self.post_id}'    
+
     # user table
 class User(UserMixin, db.Model):  
-    _tablename_ = 'users'
+    _tablename_ = 'user'
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True, index=True)
@@ -33,11 +77,10 @@ class User(UserMixin, db.Model):
     # role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
-    # comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    
+    
 
     # save user
-
     def save_user(self):
         db.session.add(self)
         db.session.commit()

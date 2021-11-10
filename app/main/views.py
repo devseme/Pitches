@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect,url_for,abort,flash
 from . import main
-from ..models import User,Post, Comment
+from ..models import User,Post, Comment,Upvote,Downvote
 from flask_login import login_required,current_user
 from .. import db,photos
 from .forms import PostForm,UpdateProfile
@@ -66,3 +66,50 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))    
+
+@main.route('/like/<int:id>', methods=['GET', 'POST'])
+@login_required
+def like(id):
+    post = Post.query.get(id)
+    if post is None:
+        abort(404)
+    like = Upvote.query.filter_by(user_id=current_user.id, post_id=id).first()
+    if like is not None:
+        db.session.delete(like)
+        db.session.commit()
+        flash('You have successfully unupvoted the pitch!')
+        return redirect(url_for('main.index'))
+    new_like = Upvote(
+        user_id=current_user.id,
+        post_id=id
+    )
+    db.session.add(new_like)
+    db.session.commit()
+    flash('You have successfully upvoted the pitch!')
+    return redirect(url_for('main.index'))
+
+
+@main.route('/dislike/<int:id>', methods=['GET', 'POST'])
+@login_required
+def dislike(id):
+    posts = Post.query.get(id)
+    if posts is None:
+        abort(404)
+    
+    dislike = Downvote.query.filter_by(
+        user_id=current_user.id, post_id=id).first()
+    if dislike is not None:
+       
+        db.session.delete(dislike)
+        db.session.commit()
+        flash('You have successfully undownvoted the pitch!')
+        return redirect(url_for('.index'))
+
+    new_dislike = Downvote(
+        user_id=current_user.id,
+        post_id=id
+    )
+    db.session.add(new_dislike)
+    db.session.commit()
+    flash('You have successfully disliked the pitch!')
+    return redirect(url_for('.index'))    
