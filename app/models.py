@@ -4,12 +4,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from . import login_manager
 
-
-
-
-  
-
-     # the post table
+    # the post table
 class Post(db.Model):  
     _tablename_ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -28,8 +23,8 @@ class Post(db.Model):
     def _repr_(self):
         return f'Post {self.title}'
 
-
-class User(UserMixin, db.Model):  # user table
+    # user table
+class User(UserMixin, db.Model):  
     _tablename_ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))

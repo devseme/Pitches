@@ -9,9 +9,9 @@ from .forms import PostForm,UpdateProfile
 
 @main.route('/')
 def index():
-    post = Post.query.order_by(Post.date_posted.desc()).all()
-    print(post)
-    return render_template('index.html')
+    post_form = PostForm()
+    all_posts = Post.query.order_by(Post.date_posted).all()
+    return render_template('index.html', posts = all_posts)
 
 
 @main.route('/post', methods=['GET', 'POST'])
@@ -22,7 +22,7 @@ def new_post():
         title = post_form.post_title.data
         category = post_form.category.data
         content = post_form.content.data
-        new_post = Post(title=title, user=current_user, category=category, content=content)
+        new_post = Post(title=title,category=category, content=content)
         new_post.save_post()
         db.session.add(new_post)
         db.session.commit()
@@ -39,9 +39,9 @@ def profile(uname):
     if user is None:
         abort(404)
     return render_template("profile/profile.html", user = user)
+
+
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
-
-
 @login_required
 def update_profile(uname):
     user = User.query.filter_by(username = uname).first()

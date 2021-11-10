@@ -18,10 +18,13 @@
 {% block content %}
 
 <div class="container-fluid text-center">
-        
-
-       <p>hello</p>
-       
+    {% for post in posts %}   
+     
+    <h4 class="text-black title">{{ post.title }}</h4>
+    <h4 class="text-black title">{{ post.category }}</h4>
+    <h4 class="text-black title">{{ post.content }}</h4>
+      
+    {% endfor %}
 
 </div>
 

@@ -18,6 +18,7 @@ def login():
       flash('Sorry,You entered an Invalid username or Password...')
   title = "Pitches One time Login"
   return render_template('auth/login.html',login_form = login_form,title=title)
+  
 @auth.route('/logout')
 @login_required
 def logout():
