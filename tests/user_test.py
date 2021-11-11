@@ -2,7 +2,14 @@ import unittest
 
 from app.models import User
 class UserTest(unittest.TestCase):
+    '''
+    Test class to test our user class
+    '''
+    
     def setUp(self):
+        '''
+        set up method that will run before other tests
+        '''
         self.new_user = User(username ='ian',password='qwerty')
 
     def test_passwor_setter(self):
